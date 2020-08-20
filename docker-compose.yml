@@ -46,6 +46,35 @@ services:
     networks:
       - overlay
 
+  proxysql:
+    container_name: "proxysql"
+    image: proxysql/proxysql:2.0.13
+    volumes:
+      - ./proxysql/proxysql.cnf:/etc/proxysql.cnf
+    depends_on:
+      - mysql_master
+      - mysql_slave
+      - mysql_slave2
+    ports:
+      - "16032:6032"
+      - "16033:6033"
+    networks:
+      - overlay
+
+  phpmyadmin:
+    container_name: "phpmyadmin"
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_PORTS: "6033,3306,3306,3306"
+      PMA_HOSTS: "proxysql,mysql_master,mysql_slave,mysql_slave2"
+      PMA_USER: root
+      PMA_PASSWORD: root_supersecret
+    depends_on:
+      - proxysql
+    ports:
+      - "9080:80" 
+    networks:
+      - overlay
 networks:
   overlay:
 

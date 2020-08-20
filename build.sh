@@ -61,3 +61,13 @@ for slave in "${slave_containers[@]}";do
 done
 
 echo -e "\033[42;34m finish success !!! \033[0m"
+
+
+############# PROXYSQL SETUP #############
+porxy_config_stmt="set mysql-set_query_lock_on_hostgroup=0;
+load mysql variables to runtime;
+save mysql variables to disk;"
+
+porxy_config_cmd='export MYSQL_PWD='$root_password'; mysql -h proxysql -P 6032 -u root -e '
+porxy_config_cmd+="\"$porxy_config_stmt\""
+docker exec $master_container sh -c "$porxy_config_cmd"
