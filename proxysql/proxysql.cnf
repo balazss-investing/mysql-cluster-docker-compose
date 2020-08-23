@@ -86,19 +86,6 @@ mysql_users:
 )
 
 
-mysql_replication_hostgroups =
-(
-    {
-        writer_hostgroup=10
-        reader_hostgroup=20
-        offline_hostgroup=9999
-        max_writers=1
-        writer_is_also_reader=1
-        max_transactions_behind=30
-        active=1
-    }
-)
-
 mysql_query_rules:
 (
  	{
